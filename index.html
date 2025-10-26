@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta SEO -->
+    <title>TerrainForge – Komunitas Terrain Builder Roblox</title>
+    <meta name="description" content="TerrainForge adalah komunitas developer Roblox Indonesia yang berfokus pada pembuatan terrain. Bergabunglah untuk belajar, berbagi, dan menampilkan karya terrain Anda.">
+    <meta name="keywords" content="Roblox, Roblox Developer, Roblox Terrain, Terrain Builder, Roblox Studio, Game Development, TerrainForge">
+    
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Ikon (untuk logo) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* CSS Lengkap (sebelumnya style.css) */
+        
+        /* 1. Reset & Variabel Global */
+        :root {
+            --color-bg: #111111;
+            --color-text: #e0e0e0;
+            --color-primary: #00B4D8; /* Biru Kehijauan */
+            --color-secondary: #4CAF50; /* Hijau Alam */
+            --color-card-bg: #1d1d1d;
+            --color-border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.5rem; color: var(--color-secondary); }
+        p { margin-bottom: 1rem; }
+        a { color: var(--color-primary); text-decoration: none; }
+        img { max-width: 100%; height: auto; border-radius: 8px; }
+
+        /* 2. Tombol (Button) */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            border-color: var(--color-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--color-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: #fff;
+            border-color: var(--color-secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: transparent;
+            color: var(--color-secondary);
+        }
+
+        /* 3. Header & Navbar */
+        .site-header {
+            background-color: rgba(17, 17, 17, 0.9);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .logo i {
+            color: var(--color-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .main-nav li {
+            margin-left: 2rem;
+        }
+
+        .main-nav a {
+            font-weight: 600;
+            padding: 0.5rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .main-nav a::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: width 0.3s;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+        
+        .main-nav a.active {
+            color: var(--color-primary);
+        }
+
+        /* Burger Menu (Mobile) */
+        .burger-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* 4. Sistem Halaman (Page System) */
+        .page-section {
+            display: none; /* Disembunyikan secara default oleh JS */
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .page-section.active {
+            display: block; /* Ditampilkan oleh JS */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 5. Section: Home (Hero & Showcase) */
+        #page-home {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .hero {
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+            overflow: hidden;
+            
+            /* Efek Parallax */
+            background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.9)), url('https://source.unsplash.com/1600x900/?nature,mountain,landscape');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .hero-content {
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #f0f0f0;
+            font-weight: 400;
+        }
+
+        .home-showcase {
+            padding: 4rem 0;
+            background-color: var(--color-card-bg);
+        }
+        
+        .home-showcase h2 {
+            text-align: center;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .showcase-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border: 2px solid var(--color-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .showcase-item img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);
+        }
+
+        /* 6. Section: Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+        
+        .gallery-item:hover img {
+            /* Efek Hover: Zoom */
+            transform: scale(1.1);
+            filter: brightness(0.8);
+        }
+        
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: #fff;
+            padding: 1.5rem 1rem 1rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            font-weight: 600;
+        }
+        
+        .gallery-item:hover .overlay {
+            transform: translateY(0);
+        }
+        
+        .gallery-item:hover {
+             /* Efek Hover: Shadow */
+            box-shadow: 0 10px 25px rgba(0, 180, 216, 0.3);
+        }
+
+        /* 7. Section: Tutorials */
+        .tutorial-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .tutorial-article {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tutorial-article:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+        }
+        
+        .tutorial-article ul, .tutorial-article ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tutorial-article code {
+            background-color: #333;
+            color: var(--color-secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* 8. Section: Developers */
+        .developer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .developer-card {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .developer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.2);
+        }
+        
+        .developer-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--color-primary);
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+        
+        .developer-card h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .developer-card .role {
+            color: var(--color-secondary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* 8B. Section: Store (Marketplace) */
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden; /* To keep image corners rounded */
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2); /* Use secondary color for store shadow */
+        }
+        
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .product-card .product-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Makes info fill remaining space */
+        }
+        
+        .product-card h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-card .product-type {
+            color: var(--color-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-card .product-description {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            flex-grow: 1; /* Pushes footer down */
+        }
+
+        .product-card .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--color-border);
+            padding-top: 1rem;
+            margin-top: auto; /* Pushes footer to bottom */
+        }
+        
+        .product-card .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+        }
+        
+        .product-card .btn-secondary {
+            padding: 0.5rem 1.2rem; /* Smaller button for cards */
+        }
+
+        /* 9. Section: Contact */
+        .contact-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: var(--color-text);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* 10. Footer */
+        .site-footer {
+            background-color: var(--color-card-bg);
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* 11. Responsif */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            
+            .main-nav {
+                position: fixed;
+                top: 65px; /* Tinggi header */
+                left: 0;
+                width: 100%;
+                background-color: var(--color-card-bg);
+                flex-direction: column;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                border-bottom: 1px solid var(--color-border);
+            }
+            
+            .main-nav.active {
+                transform: translateX(0);
+            }
+            
+            .main-nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .main-nav li {
+                margin: 0;
+                text-align: center;
+                border-bottom: 1px solid var(--color-border);
+            }
+            
+            .main-nav li:last-child {
+                border-bottom: none;
+            }
+            
+            .main-nav a {
+                display: block;
+                padding: 1.2rem;
+            }
+            
+            .main-nav a::after {
+                display: none; /* Hilangkan garis bawah di mobile nav */
+            }
+            
+            .main-nav a:hover,
+            .main-nav a.active {
+                background-color: rgba(0, 180, 216, 0.1);
+            }
+            
+            .burger-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navbar -->
+    <header class="site-header">
+        <div class="container">
+            <a href="#home" class="logo nav-link" data-page="home"><i class="fas fa-mountain-sun"></i> TerrainForge</a>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a class="nav-link active" data-page="home">Home</a></li>
+                    <li><a class="nav-link" data-page="gallery">Gallery</a></li>
+                    <li><a class="nav-link" data-page="tutorials">Tutorials</a></li>
+                    <li><a class="nav-link" data-page="developers">Developers</a></li>
+                    <li><a class="nav-link" data-page="store">Store</a></li>
+                    <li><a class="nav-link" data-page="contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="burger-menu" id="burger-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama (Wadah Halaman) -->
+    <main>
+
+        <!-- Halaman: Home -->
+        <section id="page-home" class="page-section active">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Welcome to TerrainForge</h1>
+                    <p>Build. Sculpt. Forge the World.</p>
+                    <a href="#contact" class="btn btn-primary btn-lg nav-link" data-page="contact">Join the Forge</a>
+                </div>
+            </div>
+            
+            <!-- Showcase Section -->
+            <div class="home-showcase">
+                <div class="container">
+                    <h2>Showcase Karya Terbaru</h2>
+                    <div class="showcase-grid">
+                        <div class="showcase-item">
+                            <img src="https://source.unsplash.com/800x600/?fantasy,landscape,mountain" alt="Showcase Terrain 1">
+                        </div>
+                        <div class="showcase-item">
+                            <img src="https://source.unsplash.com/800x600/?fantasy,forest,river" alt="Showcase Terrain 2">
+                        </div>
+                        <div class="showcase-item">
+                            <img src="https://source.unsplash.com/800x600/?fantasy,volcano,lava" alt="Showcase Terrain 3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman: Store -->
+        <section id="page-store" class="page-section">
+            <div class="container">
+                <h2>Marketplace</h2>
+                <p>Dapatkan aset terrain dan script berkualitas tinggi buatan anggota kami.</p>
+                
+                <div class="store-grid">
+                    <!-- Product Card 1 (Terrain) -->
+                    <div class="product-card">
+                        <img src="https://source.unsplash.com/600x400/?minimalist,mountain,wireframe" alt="Product Terrain">
+                        <div class="product-info">
+                            <h4>Terrain Gunung Polos</h4>
+                            <p class="product-type">Terrain Asset</p>
+                            <p class="product-description">Template terrain gunung dasar (polos). Sempurna untuk Anda kustomisasi sendiri dari awal.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 100k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 2 (Terrain) -->
+                    <div class="product-card">
+                        <img src="https://source.unsplash.com/600x400/?epic,mountain,landscape" alt="Product Terrain">
+                        <div class="product-info">
+                            <h4>Paket Terrain: Gunung Realistis</h4>
+                            <p class="product-type">Terrain Asset</p>
+                            <p class="product-description">Terrain gunung yang sangat detail dengan material, pencahayaan, dan vegetasi siap pakai.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 200k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 3 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/4CAF50?text=SCRIPT" alt="Product Script">
+                        <div class="product-info">
+                            <h4>Script: DonationBoard Fixxed</h4>
+                            <p class="product-type">Script</p>
+                            <p class="product-description">Donation board yang sudah diperbaiki dan aman. Menerima donasi Robux dengan UI yang bersih.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 150k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 4 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/00B4D8?text=AI+SCRIPT" alt="Product Script">
+                        <div class="product-info">
+                            <h4>GAG Global Announcements (AI Ver)</h4>
+                            <p class="product-type">Script</p>
+                            <p class="product-description">Sistem pengumuman global canggih dengan filter AI untuk mencegah spam dan bahasa kotor.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 350k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 5 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/e0e0e0?text=VISUALS" alt="Product Script">
+                        <div class="product-info">
+                            <h4>ForteVisuals 1.3</h4>
+                            <p class="product-type">Script (Visuals)</p>
+                            <p class="product-description">Paket efek visual (VFX) untuk meningkatkan tampilan game Anda. Termasuk bloom, blur, dan color correction.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 250k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 6 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/4CAF50?text=SHOP+UI" alt="Product Script">
+                        <div class="product-info">
+                            <h4>aurashopp</h4>
+                            <p class="product-type">Script (UI)</p>
+                            <p class="product-description">UI Kit lengkap untuk toko dalam game (in-game shop). Modern, bersih, dan mudah dikonfigurasi.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 300k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 7 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/FF0000?text=ADMIN" alt="Product Script">
+                        <div class="product-info">
+                            <h4>AdminToolfix</h4>
+                            <p class="product-type">Script (Admin)</p>
+                            <p class="product-description">Panel admin dasar yang telah diperbaiki. Termasuk perintah 'kick', 'ban', 'ff', dan 'message'.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 100k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 8 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/e0e0e0?text=TITLE" alt="Product Script">
+                        <div class="product-info">
+                            <h4>TitleAsset</h4>
+                            <p class="product-type">Script (Asset)</p>
+                            <p class="product-description">Script sederhana untuk menampilkan judul kustom di layar saat pemain bergabung (title screen).</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 50k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 9 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/e0e0e0?text=OVERHEAD+UI" alt="Product Script">
+                        <div class="product-info">
+                            <h4>Overhead Title By Lucas</h4>
+                            <p class="product-type">Script (UI)</p>
+                            <p class="product-description">Script overhead title (nama di atas kepala) yang populer dari Lucas. Mudah digunakan.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 75k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 10 (Script) -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/600x400/1d1d1d/00B4D8?text=GLOWSTICK" alt="Product Script">
+                        <div class="product-info">
+                            <h4>Glowstick Doble</h4>
+                            <p class="product-type">Script (Tool)</p>
+                            <p class="product-description">Script untuk item glowstick yang bisa dipegang di kedua tangan (double). Termasuk efek cahaya.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rp 120k</span>
+                                <a href="#" class="btn btn-secondary">Beli</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman: Contact -->
+        <section id="page-contact" class="page-section">
+            <div class="container">
+                <h2>Hubungi Kami</h2>
+                <p>Ada pertanyaan, saran, atau ingin bergabung? Kirimkan pesan Anda!</p>
+                
+                <form action="https://discord.gg/R9EfkG3SaY" method="POST" class="contact-form">
+                    <!-- Ganti "YOUR_EMAIL_HERE" dengan email Anda -->
+                    
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Pesan</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    
+                    <!-- FormSubmit settings -->
+                    <input type="hidden" name="_subject" value="Pesan Baru dari Website TerrainForge!">
+                    <input type="hidden" name="_autoresponse" value="Terima kasih telah menghubungi TerrainForge! Kami akan segera merespon pesan Anda.">
+                    <!-- <input type="hidden" name="_next" value="https://yourdomain.com/thankyou.html"> -->
+
+                    <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 TerrainForge. Dibuat oleh komunitas untuk komunitas.<br>
+            TerrainForge tidak berafiliasi dengan Roblox Corporation.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript Lengkap (sebelumnya script.js)
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page-section');
+            const mainNav = document.getElementById('main-nav');
+            const burgerMenu = document.getElementById('burger-menu');
+
+            // Fungsi untuk menampilkan halaman
+            function showPage(pageId) {
+                // Sembunyikan semua halaman
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Tampilkan halaman yang dituju
+                const targetPage = document.getElementById(`page-${pageId}`);
+                if(targetPage) {
+                    targetPage.classList.add('active');
+                }
+
+                // Update status 'active' di nav link
+                navLinks.forEach(link => {
+                    if (link.dataset.page === pageId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                
+                // Gulir ke atas halaman
+                window.scrollTo(0, 0);
+                
+                // Tutup menu mobile jika terbuka
+                mainNav.classList.remove('active');
+            }
+
+            // Tambahkan event listener ke semua nav-link
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Mencegah perpindahan hash-link default
+                    const pageId = link.dataset.page;
+                    showPage(pageId);
+                });
+            });
+
+            // Logika Burger Menu
+            burgerMenu.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+            });
+
+            // Tampilkan halaman 'home' saat pertama kali dimuat
+            // (Sudah di-handle dengan class 'active' di HTML, tapi ini untuk double check)
+            // showPage('home'); 
+            // Tidak perlu dipanggil di awal jika 'home' sudah active by default
+        });
+    </script>
+
+</body>
+</html>
+
+
